@@ -475,9 +475,10 @@ fn calculate_grok_cost_at(
 ) -> f64 {
     match mode {
         CostMode::Display => cost_usd.unwrap_or(0.0),
-        // Grok's own figure is authoritative, so `auto` prefers it and only falls
-        // back to the pricing table when a turn recorded no ticks.
-        CostMode::Auto if cost_usd.is_some() => cost_usd.unwrap_or(0.0),
+        // `auto` uses the pricing table (this fork). Grok's invoice ticks still
+        // surface through `--mode display`. A `turn_completed` row sums several
+        // API requests, so the table's 200K long-context tier is chosen per turn
+        // rather than per request and can exceed the invoice.
         CostMode::Auto | CostMode::Calculate => {
             // Exact hits across every candidate first: `find` falls back to
             // substring matching, and a fuzzy hit on the first candidate would
@@ -516,13 +517,13 @@ fn calculate_grok_cost_at(
 fn missing_grok_pricing(
     raw_model: &str,
     usage: TokenUsageRaw,
-    cost_usd: Option<f64>,
+    _cost_usd: Option<f64>,
     mode: CostMode,
     pricing: &PricingMap,
 ) -> Option<String> {
-    // A turn that carried its own cost needs no pricing entry, so `display` and a
-    // ticks-backed `auto` never warn about a missing model.
-    if mode == CostMode::Display || (mode == CostMode::Auto && cost_usd.is_some()) {
+    // `display` only shows recorded ticks, so a missing pricing row is irrelevant.
+    // `auto` prices from the table in this fork, so it warns like `calculate`.
+    if mode == CostMode::Display {
         return None;
     }
     missing_pricing_model_for_candidates(
@@ -1106,7 +1107,7 @@ mod tests {
     }
 
     #[test]
-    fn auto_prefers_recorded_ticks_while_calculate_recomputes() {
+    fn auto_uses_the_pricing_table_even_when_ticks_exist() {
         let key = "grok-4.5".to_string();
         let pricing_override = crate::cli::PricingOverride {
             input_cost_per_token: Some(1.0),
@@ -1128,7 +1129,7 @@ mod tests {
                 CostMode::Auto,
                 &pricing
             ),
-            0.25
+            20.0
         );
         assert_eq!(
             calculate_grok_cost(
@@ -1139,6 +1140,16 @@ mod tests {
                 &pricing
             ),
             20.0
+        );
+        assert_eq!(
+            calculate_grok_cost(
+                "grok-4.5-build",
+                usage,
+                Some(0.25),
+                CostMode::Display,
+                &pricing
+            ),
+            0.25
         );
     }
 

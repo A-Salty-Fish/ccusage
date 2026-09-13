@@ -49,11 +49,10 @@ Grok records OpenAI-style usage where `inputTokens` includes cache:
 | `cacheCreationTokens`            | `cache_creation_input_tokens` | carved out of the uncached remainder                                     |
 | `costUsdTicks`                   | `cost_usd`                    | fixed-point USD, one tick is 1e-10 USD                                   |
 
-`costUsdTicks` is the invoice cost, so `display` and the default `auto` report what
-Grok billed. `calculate`, and `auto` for turns that recorded no ticks, fall back to
-token × LiteLLM pricing. That fallback only approximates the invoice: a
-`turn_completed` row aggregates several API requests, so it cannot reproduce Grok's
-per-request long-context tiering.
+`costUsdTicks` is the invoice cost and is what `--mode display` shows. This fork's
+default `auto` (and `calculate`) prices from the table instead, which typically
+reads higher than the invoice: a `turn_completed` row aggregates several API
+requests, so the 200K long-context tier is chosen per turn rather than per request.
 
 ## Model display and pricing
 
