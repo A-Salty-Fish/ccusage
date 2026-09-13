@@ -2270,6 +2270,43 @@ impl PricingMap {
                 ..glm_base
             },
         );
+        // Cursor first-party Composer 2.5, from
+        // https://cursor.com/docs/models-and-pricing (per-million token rates).
+        self.put_builtin_entry(
+            "composer-2.5".to_string(),
+            Pricing {
+                input: 0.5e-6,
+                output: 2.5e-6,
+                cache_create: 0.5e-6,
+                cache_read: 0.2e-6,
+                cache_read_explicit: true,
+                cache_create_explicit: false,
+                input_above_200k: None,
+                output_above_200k: None,
+                cache_create_above_200k: None,
+                cache_read_above_200k: None,
+                long_context_threshold: None,
+                fast_multiplier: 1.0,
+            },
+        );
+        self.put_builtin_entry(
+            "composer-2.5-fast".to_string(),
+            Pricing {
+                input: 3e-6,
+                output: 15e-6,
+                cache_create: 3e-6,
+                cache_read: 0.5e-6,
+                cache_read_explicit: true,
+                cache_create_explicit: false,
+                input_above_200k: None,
+                output_above_200k: None,
+                cache_create_above_200k: None,
+                cache_read_above_200k: None,
+                long_context_threshold: None,
+                fast_multiplier: 1.0,
+            },
+        );
+
         self.context_limits.insert("gpt-5.5".to_string(), 1_050_000);
         self.context_limits
             .insert("grok-4.3".to_string(), 1_000_000);
@@ -4583,6 +4620,19 @@ mod tests {
         let gpt_55 = pricing.find("gpt-5.5").unwrap();
         assert_eq!(gpt_55.input_above_200k, Some(12e-6));
         assert_eq!(gpt_55.long_context_threshold, None);
+    }
+
+    #[test]
+    fn builtin_table_covers_cursor_composer_2_5() {
+        let pricing = PricingMap::load_embedded();
+        let standard = pricing.find("composer-2.5").unwrap();
+        assert!((standard.input * 1e6 - 0.5).abs() < 1e-9);
+        assert!((standard.output * 1e6 - 2.5).abs() < 1e-9);
+        assert!((standard.cache_read * 1e6 - 0.2).abs() < 1e-9);
+        let fast = pricing.find("composer-2.5-fast").unwrap();
+        assert!((fast.input * 1e6 - 3.0).abs() < 1e-9);
+        assert!((fast.output * 1e6 - 15.0).abs() < 1e-9);
+        assert!((fast.cache_read * 1e6 - 0.5).abs() < 1e-9);
     }
 
     #[test]

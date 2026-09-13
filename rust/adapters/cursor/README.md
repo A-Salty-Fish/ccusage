@@ -46,7 +46,9 @@ Events older than two days are stored under
 | `chargedCents / 100`            | `credits`                     |
 | `conversationId` or model       | `session_id`                  |
 
-`auto` and `display` use `totalCents`. `calculate` prices from the shared table.
+`auto` and `display` use `totalCents`. `calculate` prices from the shared table
+(Composer 2.5 uses Cursor's published rates). Unpriced models such as Grok Bot
+fall back to `totalCents` instead of warning and dropping cost.
 
 ## Public surface
 

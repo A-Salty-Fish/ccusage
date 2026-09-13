@@ -88,7 +88,7 @@ pub(crate) fn usage_event_to_entry(
     let model = event.model.clone();
     let cost_usd = token_usage.total_cents.map(|cents| cents / 100.0);
     let credits = event.charged_cents.map(|cents| cents / 100.0);
-    let cost = calculate_cost_for_usage_at(
+    let mut cost = calculate_cost_for_usage_at(
         model.as_deref(),
         usage,
         cost_usd,
@@ -96,8 +96,17 @@ pub(crate) fn usage_event_to_entry(
         mode,
         Some(pricing),
     );
-    let missing_pricing_model =
+    let mut missing_pricing_model =
         missing_pricing_model_for_usage(model.as_deref(), usage, cost_usd, mode, Some(pricing));
+    // Grok Bot rows (`grok-bot-default` / automation / cua) have no published
+    // per-token rate. Cursor still records totalCents; use that instead of
+    // dropping the model from calculate-mode totals.
+    if missing_pricing_model.is_some()
+        && let Some(recorded) = cost_usd
+    {
+        cost = recorded;
+        missing_pricing_model = None;
+    }
     let session_id = event
         .conversation_id
         .clone()
@@ -256,6 +265,27 @@ mod tests {
         assert_eq!(entry.data.message.usage.input_tokens, 318_828);
         assert_eq!(entry.data.message.usage.cache_read_input_tokens, 4_009_984);
         assert!((entry.cost - 4.5654).abs() < 1e-9);
+    }
+
+    #[test]
+    fn calculate_mode_uses_recorded_cents_when_the_model_is_unpriced() {
+        let entry = usage_event_to_entry(
+            &event(serde_json::json!({
+                "timestamp": "1782261704029",
+                "model": "grok-bot-default",
+                "tokenUsage": {
+                    "inputTokens": 100,
+                    "outputTokens": 20,
+                    "totalCents": 12.5
+                }
+            })),
+            None,
+            CostMode::Calculate,
+            &PricingMap::load_embedded(),
+        )
+        .unwrap();
+        assert!((entry.cost - 0.125).abs() < 1e-9);
+        assert_eq!(entry.missing_pricing_model, None);
     }
 
     #[test]
