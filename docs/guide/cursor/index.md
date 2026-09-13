@@ -49,7 +49,7 @@ These views support `--json`, `--compact`, `--mode`, `--since`, `--until`, `--ti
 - **Token usage** - Input, output, cache write, and cache read from each dashboard event. Input is not treated as including cache.
 - **Cost (`auto` / `display`)** - `tokenUsage.totalCents / 100`, Cursor's own token-cost.
 - **Credits** - `chargedCents / 100`, what the plan actually deducted (often lower than token-cost for included usage).
-- **Cost (`calculate`)** - Token counts × the shared pricing table. Composer 2.5 rates come from [Cursor model pricing](https://cursor.com/docs/models-and-pricing). Grok Bot rows (`grok-bot-default`, `grok-bot-automation`, `grok-bot-cua`) have no published per-token rate, so calculate falls back to Cursor's recorded `totalCents`.
+- **Cost (`calculate`)** - Token counts × the shared pricing table. Composer 2.5 rates come from [Cursor model pricing](https://cursor.com/docs/models-and-pricing). Grok Bot rows (`grok-bot-default`, `grok-bot-automation`, `grok-bot-cua`) are priced as **Grok 4.6** (`$2 / $6` per million, cache read `$0.50`, doubled above 200K). Other unpriced dashboard ids fall back to Cursor's recorded `totalCents`.
 - **Session identity** - `conversationId` when the API provides it; otherwise the model name.
 
 ## Environment Variables

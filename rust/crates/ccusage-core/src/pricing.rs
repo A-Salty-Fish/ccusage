@@ -2543,6 +2543,10 @@ fn pricing_alias(model: &str) -> Option<&'static str> {
     match model {
         "gpt-5.6" => Some("gpt-5.6-sol"),
         "gpt-5.3-spark" => Some("gpt-5.3-codex-spark"),
+        // Cursor Grok Bot dashboard ids have no LiteLLM row. Cursor's first-party
+        // Grok pool is Grok 4.6 (and 4.5 at the same $2/$6 card), so price them
+        // as grok-4.6 including the 200K long-context tier.
+        "grok-bot-default" | "grok-bot-automation" | "grok-bot-cua" => Some("grok-4.6"),
         _ => None,
     }
 }
@@ -4620,6 +4624,19 @@ mod tests {
         let gpt_55 = pricing.find("gpt-5.5").unwrap();
         assert_eq!(gpt_55.input_above_200k, Some(12e-6));
         assert_eq!(gpt_55.long_context_threshold, None);
+    }
+
+    #[test]
+    fn grok_bot_ids_price_as_grok_4_6() {
+        let pricing = PricingMap::load_embedded();
+        let grok = pricing.find("grok-4.6").unwrap();
+        for model in ["grok-bot-default", "grok-bot-automation", "grok-bot-cua"] {
+            let entry = pricing.find(model).expect(model);
+            assert_eq!(entry.input, grok.input, "{model}");
+            assert_eq!(entry.output, grok.output, "{model}");
+            assert_eq!(entry.cache_read, grok.cache_read, "{model}");
+            assert_eq!(entry.input_above_200k, grok.input_above_200k, "{model}");
+        }
     }
 
     #[test]

@@ -98,9 +98,8 @@ pub(crate) fn usage_event_to_entry(
     );
     let mut missing_pricing_model =
         missing_pricing_model_for_usage(model.as_deref(), usage, cost_usd, mode, Some(pricing));
-    // Grok Bot rows (`grok-bot-default` / automation / cua) have no published
-    // per-token rate. Cursor still records totalCents; use that instead of
-    // dropping the model from calculate-mode totals.
+    // Dashboard ids that LiteLLM still misses (and that are not aliased to a
+    // published card) keep Cursor's recorded totalCents instead of $0.
     if missing_pricing_model.is_some()
         && let Some(recorded) = cost_usd
     {
@@ -268,11 +267,45 @@ mod tests {
     }
 
     #[test]
-    fn calculate_mode_uses_recorded_cents_when_the_model_is_unpriced() {
+    fn calculate_mode_prices_grok_bot_as_grok_4_6() {
+        let pricing = PricingMap::load_embedded();
         let entry = usage_event_to_entry(
             &event(serde_json::json!({
                 "timestamp": "1782261704029",
                 "model": "grok-bot-default",
+                "tokenUsage": {
+                    "inputTokens": 100,
+                    "outputTokens": 20,
+                    "totalCents": 12.5
+                }
+            })),
+            None,
+            CostMode::Calculate,
+            &pricing,
+        )
+        .unwrap();
+        let expected = crate::calculate_cost_for_usage_at(
+            Some("grok-4.6"),
+            crate::TokenUsageRaw {
+                input_tokens: 100,
+                output_tokens: 20,
+                ..crate::TokenUsageRaw::default()
+            },
+            None,
+            None,
+            CostMode::Calculate,
+            Some(&pricing),
+        );
+        assert!((entry.cost - expected).abs() < 1e-12);
+        assert_eq!(entry.missing_pricing_model, None);
+    }
+
+    #[test]
+    fn calculate_mode_uses_recorded_cents_when_the_model_is_unpriced() {
+        let entry = usage_event_to_entry(
+            &event(serde_json::json!({
+                "timestamp": "1782261704029",
+                "model": "cursor-unpriced-test-model",
                 "tokenUsage": {
                     "inputTokens": 100,
                     "outputTokens": 20,
