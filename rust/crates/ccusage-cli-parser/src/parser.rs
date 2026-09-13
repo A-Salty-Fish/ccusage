@@ -311,6 +311,13 @@ fn parse_command(
             STANDARD_AGENT_REPORTS,
             Command::Copilot,
         ),
+        "cursor" => parse_basic_agent_command(
+            parser,
+            shared,
+            "cursor",
+            STANDARD_AGENT_REPORTS,
+            Command::Cursor,
+        ),
         "gemini" => parse_basic_agent_command(
             parser,
             shared,
@@ -781,6 +788,7 @@ fn is_command(arg: &str) -> bool {
             | "openclaw"
             | "kilo"
             | "copilot"
+            | "cursor"
             | "gemini"
             | "antigravity"
             | "kimi"
@@ -942,6 +950,7 @@ fn is_agent_command(command: &str) -> bool {
             | "goose"
             | "kilo"
             | "copilot"
+            | "cursor"
             | "gemini"
             | "antigravity"
             | "kimi"
@@ -961,7 +970,7 @@ fn agent_report_supported(agent: &str, report: &str) -> bool {
         "codex" => matches!(report, "daily" | "monthly" | "session"),
         "opencode" => matches!(report, "daily" | "weekly" | "monthly" | "session"),
         "amp" | "droid" | "codebuff" | "hermes" | "pi" | "goose" | "kilo" | "copilot"
-        | "gemini" | "antigravity" | "kimi" | "qwen" | "openclaw" | "grok" | "zcode" => {
+        | "cursor" | "gemini" | "antigravity" | "kimi" | "qwen" | "openclaw" | "grok" | "zcode" => {
             matches!(report, "daily" | "monthly" | "session")
         }
         _ => false,
@@ -981,6 +990,7 @@ fn agent_display_name(agent: &str) -> &'static str {
         "goose" => "Goose",
         "kilo" => "Kilo",
         "copilot" => "GitHub Copilot CLI",
+        "cursor" => "Cursor",
         "gemini" => "Gemini CLI",
         "antigravity" => "Antigravity",
         "kimi" => "Kimi",
@@ -1064,6 +1074,7 @@ fn last_option_error(command: Option<&Command>, root_shared: &SharedArgs) -> Opt
             | Command::Goose(args)
             | Command::Kilo(args)
             | Command::Copilot(args)
+            | Command::Cursor(args)
             | Command::Gemini(args)
             | Command::Antigravity(args)
             | Command::Kimi(args)

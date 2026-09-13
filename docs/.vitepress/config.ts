@@ -80,6 +80,7 @@ export default defineConfig({
 						{ text: 'Kilo', link: '/guide/kilo/' },
 						{ text: 'Qwen', link: '/guide/qwen/' },
 						{ text: 'GitHub Copilot CLI', link: '/guide/copilot/' },
+						{ text: 'Cursor', link: '/guide/cursor/' },
 						{ text: 'Gemini CLI', link: '/guide/gemini/' },
 						{ text: 'Antigravity', link: '/guide/antigravity/' },
 						{ text: 'Kimi', link: '/guide/kimi/' },

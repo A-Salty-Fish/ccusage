@@ -23,6 +23,8 @@ ccusage detects supported data source files from conventional locations by defau
 | `QWEN_DATA_DIR`                   | Qwen           | `~/.qwen`                                            |
 | `COPILOT_HOME`                    | Copilot CLI    | `~/.copilot`                                         |
 | `COPILOT_OTEL_FILE_EXPORTER_PATH` | Copilot CLI    | Explicit `.jsonl` file                               |
+| `CCUSAGE_CURSOR_TOKEN`            | Cursor         | Bearer token override                                |
+| `CCUSAGE_CURSOR_CACHE`            | Cursor         | Explicit cache file path                             |
 | `GEMINI_DATA_DIR`                 | Gemini CLI     | `~/.gemini/tmp`                                      |
 | `ANTIGRAVITY_DATA_DIR`            | Antigravity    | `~/.gemini/antigravity*` and `~/.config/antigravity` |
 | `GROK_HOME`                       | Grok Build CLI | `~/.grok`                                            |

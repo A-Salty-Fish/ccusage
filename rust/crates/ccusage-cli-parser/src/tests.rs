@@ -200,6 +200,7 @@ fn command_snapshot(command: Option<Command>) -> Value {
         Some(Command::Goose(args)) => agent_command_snapshot("goose", args),
         Some(Command::Kilo(args)) => agent_command_snapshot("kilo", args),
         Some(Command::Copilot(args)) => agent_command_snapshot("copilot", args),
+        Some(Command::Cursor(args)) => agent_command_snapshot("cursor", args),
         Some(Command::Gemini(args)) => agent_command_snapshot("gemini", args),
         Some(Command::Antigravity(args)) => agent_command_snapshot("antigravity", args),
         Some(Command::Kimi(args)) => agent_command_snapshot("kimi", args),
@@ -649,7 +650,7 @@ fn root_help_lists_agent_namespaces_without_nested_commands() {
     let help = help_text();
     let agents = [
         "claude", "codex", "opencode", "amp", "droid", "codebuff", "hermes", "pi", "goose", "kilo",
-        "copilot", "gemini", "kimi", "qwen", "openclaw", "grok", "zcode",
+        "copilot", "cursor", "gemini", "kimi", "qwen", "openclaw", "grok", "zcode",
     ];
 
     for agent in agents {
@@ -864,6 +865,10 @@ fn snapshots_representative_cli_parse_shapes() {
         json!({
             "case": "grok daily",
             "cli": cli_snapshot(parse(&["ccusage", "grok", "daily", "--json"])),
+        }),
+        json!({
+            "case": "cursor daily",
+            "cli": cli_snapshot(parse(&["ccusage", "cursor", "daily", "--json"])),
         }),
         json!({
             "case": "antigravity session",
@@ -1261,6 +1266,16 @@ fn parses_openclaw_session_options() {
     assert_eq!(args.kind, AgentReportKind::Session);
     assert!(args.shared.json);
     assert_eq!(args.open_claw_path.as_deref(), Some("/tmp/openclaw"));
+}
+
+#[test]
+fn parses_cursor_daily_options() {
+    let cli = parse(&["ccusage", "cursor", "daily", "--json"]);
+    let Some(Command::Cursor(args)) = cli.command else {
+        panic!("expected cursor command");
+    };
+    assert_eq!(args.kind, AgentReportKind::Daily);
+    assert!(args.shared.json);
 }
 
 #[test]

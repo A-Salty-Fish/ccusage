@@ -115,6 +115,7 @@ ccusage daily --since 2026-05-01 --until 2026-05-16
 ```bash
 ccusage codex daily
 ccusage claude monthly
+ccusage cursor daily
 ccusage zcode daily
 ```
 
@@ -177,6 +178,7 @@ If ccusage shows no data, check:
    - OpenClaw: `${OPENCLAW_DIR:-~/.openclaw}` (also scans `~/.clawdbot`, `~/.moltbot`, `~/.moldbot`)
    - Qwen: `${QWEN_DATA_DIR:-~/.qwen}`
    - GitHub Copilot CLI: `${COPILOT_HOME:-~/.copilot}/session-state/*/events.jsonl`, `${COPILOT_HOME:-~/.copilot}/otel/**/*.jsonl`, or the single file specified by `COPILOT_OTEL_FILE_EXPORTER_PATH`
+   - Cursor: dashboard API (sign in to the Cursor app, or set `CCUSAGE_CURSOR_TOKEN`)
    - Antigravity: `${ANTIGRAVITY_DATA_DIR:-~/.gemini/antigravity*}` or `~/.config/antigravity`
    - Grok Build CLI: `${GROK_HOME:-~/.grok}`
    - ZCode: `${ZCODE_HOME:-~/.zcode}/cli/db/db.sqlite`

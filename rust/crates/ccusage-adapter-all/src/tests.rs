@@ -821,6 +821,8 @@ fn isolated_agent_env(
         "QWEN_DATA_DIR",
         "GROK_HOME",
         "ZCODE_HOME",
+        "CCUSAGE_CURSOR_TOKEN",
+        "CCUSAGE_CURSOR_CACHE",
     ]
     .into_iter()
     .map(|key| (key, None::<OsString>))
@@ -831,6 +833,14 @@ fn isolated_agent_env(
         Some(fixture.path("empty-userprofile").into_os_string()),
     ));
     vars.push(("XDG_CONFIG_HOME", Some(xdg_config)));
+    vars.push((
+        "XDG_CACHE_HOME",
+        Some(fixture.path("empty-xdg-cache").into_os_string()),
+    ));
+    vars.push((
+        "APPDATA",
+        Some(fixture.path("empty-appdata").into_os_string()),
+    ));
     vars.push((source_key, Some(source_value)));
     EnvVarsGuard::set_many(vars)
 }

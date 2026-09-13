@@ -2,7 +2,7 @@
 
 ![ccusage daily report showing token usage and costs by date](/screenshot.png)
 
-**ccusage** is a local CLI for understanding coding (agent) CLI token usage and estimated costs across Claude Code, Codex, OpenCode, Amp, Droid, Codebuff, Hermes Agent, pi-agent, Goose, OpenClaw, Kilo, Kimi, Qwen, GitHub Copilot CLI, Gemini CLI, Antigravity, Grok Build CLI, and ZCode.
+**ccusage** is a local CLI for understanding coding (agent) CLI token usage and estimated costs across Claude Code, Codex, OpenCode, Amp, Droid, Codebuff, Hermes Agent, pi-agent, Goose, OpenClaw, Kilo, Kimi, Qwen, GitHub Copilot CLI, Cursor, Gemini CLI, Antigravity, Grok Build CLI, and ZCode.
 
 The original **“cc”** came from **C**laude **C**ode usage and now also fits **C**odex **C**LI usage. As OpenCode, Amp, Droid, Codebuff, Hermes Agent, pi-agent, Goose, OpenClaw, Kilo, Kimi, Qwen, Gemini CLI, Antigravity, Grok Build CLI, ZCode, and other coding (agent) CLIs became part of the same workflow, ccusage expanded into a general name for local coding CLI usage analysis.
 
@@ -19,7 +19,7 @@ Modern coding (agent) CLI usage is split across several local data formats. That
 
 ccusage reads the local usage files that coding CLIs already generate and provides:
 
-- **All Sources by Default** - Claude Code, Codex, OpenCode, Amp, Droid, Codebuff, Hermes Agent, pi-agent, Goose, OpenClaw, Kilo, Kimi, Qwen, GitHub Copilot CLI, Gemini CLI, Antigravity, Grok Build CLI, and ZCode in one CLI
+- **All Sources by Default** - Claude Code, Codex, OpenCode, Amp, Droid, Codebuff, Hermes Agent, pi-agent, Goose, OpenClaw, Kilo, Kimi, Qwen, GitHub Copilot CLI, Cursor, Gemini CLI, Antigravity, Grok Build CLI, and ZCode in one CLI
 - **Usage Views** - Daily, weekly, monthly, and session-based breakdowns
 - **Cost Analysis** - Estimated costs based on token usage and model pricing
 - **Focused Data Source Views** - Start with all detected sources, then narrow the same usage views to one source when needed
@@ -88,6 +88,7 @@ ccusage reads from local coding CLI data directories:
 | Kimi           | `kimi`        | `${KIMI_DATA_DIR:-~/.kimi}` (also `~/.kimi-code`)                                                         |
 | Qwen           | `qwen`        | `${QWEN_DATA_DIR:-~/.qwen}`                                                                               |
 | Copilot CLI    | `copilot`     | `${COPILOT_HOME:-~/.copilot}/session-state/*/events.jsonl`, `${COPILOT_HOME:-~/.copilot}/otel/**/*.jsonl` |
+| Cursor         | `cursor`      | Cursor dashboard API (token from `CCUSAGE_CURSOR_TOKEN` or `state.vscdb`)                                 |
 | Gemini CLI     | `gemini`      | `${GEMINI_DATA_DIR:-~/.gemini/tmp}`                                                                       |
 | Antigravity    | `antigravity` | `${ANTIGRAVITY_DATA_DIR:-~/.gemini/antigravity*}` or `~/.config/antigravity`                              |
 | Grok Build CLI | `grok`        | `${GROK_HOME:-~/.grok}`                                                                                   |
@@ -128,6 +129,7 @@ ccusage kilo daily
 ccusage kimi daily
 ccusage qwen daily
 ccusage copilot daily
+ccusage cursor daily
 ccusage gemini daily
 ccusage antigravity daily
 ccusage grok daily

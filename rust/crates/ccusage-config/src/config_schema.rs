@@ -44,6 +44,8 @@ pub struct CcusageConfig {
     pub kilo: Option<KiloConfig>,
     /// GitHub Copilot CLI configuration.
     pub copilot: Option<CopilotConfig>,
+    /// Cursor configuration.
+    pub cursor: Option<CursorConfig>,
     /// Gemini CLI configuration.
     pub gemini: Option<GeminiConfig>,
     /// Antigravity configuration.
@@ -320,6 +322,21 @@ pub struct QwenConfig {
 #[derive(Debug, Default, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct QwenCommandsConfig {
+    pub daily: Option<SharedOptions>,
+    pub monthly: Option<SharedOptions>,
+    pub session: Option<SharedOptions>,
+}
+
+#[derive(Debug, Default, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct CursorConfig {
+    pub defaults: Option<SharedOptions>,
+    pub commands: Option<CursorCommandsConfig>,
+}
+
+#[derive(Debug, Default, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct CursorCommandsConfig {
     pub daily: Option<SharedOptions>,
     pub monthly: Option<SharedOptions>,
     pub session: Option<SharedOptions>,
@@ -1131,6 +1148,7 @@ mod tests {
             &with_keys(&shared, &["openClawPath"]),
         );
         assert_schema_properties(&schema, &["grok", "defaults"], &shared);
+        assert_schema_properties(&schema, &["cursor", "defaults"], &shared);
         assert_schema_properties(&schema, &["antigravity", "defaults"], &shared);
         assert_schema_properties(&schema, &["zcode", "defaults"], &shared);
     }
@@ -1194,6 +1212,7 @@ mod tests {
                 "codex",
                 "commands",
                 "copilot",
+                "cursor",
                 "defaults",
                 "droid",
                 "gemini",

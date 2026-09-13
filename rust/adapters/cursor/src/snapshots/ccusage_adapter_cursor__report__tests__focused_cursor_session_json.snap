@@ -1,0 +1,69 @@
+---
+source: adapters/cursor/src/report.rs
+expression: "report_from_rows(&session, AgentReportKind::Session)"
+---
+{
+  "sessions": [
+    {
+      "cacheCreationTokens": 4,
+      "cacheReadTokens": 8,
+      "credits": 0.1,
+      "firstActivity": "2026-06-24T00:41:44.029Z",
+      "inputTokens": 10,
+      "lastActivity": "2026-06-24T00:41:44.029Z",
+      "modelBreakdowns": [
+        {
+          "cacheCreationTokens": 4,
+          "cacheReadTokens": 8,
+          "cost": 0.5,
+          "inputTokens": 10,
+          "modelName": "k3",
+          "outputTokens": 2
+        }
+      ],
+      "modelsUsed": [
+        "k3"
+      ],
+      "outputTokens": 2,
+      "projectPath": "Cursor",
+      "sessionId": "conv-a",
+      "totalCost": 0.5,
+      "totalTokens": 24
+    },
+    {
+      "cacheCreationTokens": 4,
+      "cacheReadTokens": 8,
+      "credits": 0.1,
+      "firstActivity": "2026-06-24T00:43:24.029Z",
+      "inputTokens": 10,
+      "lastActivity": "2026-06-24T00:43:24.029Z",
+      "modelBreakdowns": [
+        {
+          "cacheCreationTokens": 4,
+          "cacheReadTokens": 8,
+          "cost": 0.5,
+          "inputTokens": 10,
+          "modelName": "k3",
+          "outputTokens": 2
+        }
+      ],
+      "modelsUsed": [
+        "k3"
+      ],
+      "outputTokens": 2,
+      "projectPath": "Cursor",
+      "sessionId": "conv-b",
+      "totalCost": 0.5,
+      "totalTokens": 24
+    }
+  ],
+  "totals": {
+    "cacheCreationTokens": 8,
+    "cacheReadTokens": 16,
+    "credits": 0.2,
+    "inputTokens": 20,
+    "outputTokens": 4,
+    "totalCost": 1.0,
+    "totalTokens": 48
+  }
+}

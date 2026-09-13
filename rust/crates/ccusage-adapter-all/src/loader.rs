@@ -11,8 +11,8 @@ use crate::{
     BUILT_IN_AGENT_NAMES, CodexGroup, LoadedEntry, ModelBreakdown, PricingMap, Result,
     SessionAccumulator, UsageSummary,
     adapter::{
-        amp, antigravity, claude, codebuff, codex, copilot, droid, gemini, goose, grok, hermes,
-        kilo, kimi, openclaw, opencode, pi, qwen, zcode,
+        amp, antigravity, claude, codebuff, codex, copilot, cursor, droid, gemini, goose, grok,
+        hermes, kilo, kimi, openclaw, opencode, pi, qwen, zcode,
     },
     cli::{AgentReportKind, CodexSpeed, NamedPiStore, SharedArgs, WeekDay},
     filter_loaded_entries_by_date, json_float,
@@ -353,6 +353,22 @@ fn load_base_rows(
                     zcode::load_entries,
                     zcode::summarize_entries,
                 )
+            }),
+        },
+        AgentLoadSpec {
+            index: 18,
+            agent: BUILT_IN_AGENT_NAMES[18],
+            progress_agent: crate::progress::UsageLoadAgent("Cursor"),
+            load: Box::new(|| {
+                let mut rows = load_summary_agent_rows(
+                    "cursor",
+                    load_kind,
+                    &loader_shared,
+                    || cursor::load_entries(&loader_shared, pricing),
+                    cursor::summarize_entries,
+                )?;
+                rows.detected = rows.detected || cursor::has_data();
+                Ok(rows)
             }),
         },
     ];

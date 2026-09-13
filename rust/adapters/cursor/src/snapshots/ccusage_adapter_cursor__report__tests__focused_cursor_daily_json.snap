@@ -1,0 +1,40 @@
+---
+source: adapters/cursor/src/report.rs
+expression: "report_from_rows(&daily, AgentReportKind::Daily)"
+---
+{
+  "daily": [
+    {
+      "cacheCreationTokens": 8,
+      "cacheReadTokens": 16,
+      "credits": 0.2,
+      "date": "2026-06-24",
+      "inputTokens": 20,
+      "modelBreakdowns": [
+        {
+          "cacheCreationTokens": 8,
+          "cacheReadTokens": 16,
+          "cost": 1.0,
+          "inputTokens": 20,
+          "modelName": "k3",
+          "outputTokens": 4
+        }
+      ],
+      "modelsUsed": [
+        "k3"
+      ],
+      "outputTokens": 4,
+      "totalCost": 1.0,
+      "totalTokens": 48
+    }
+  ],
+  "totals": {
+    "cacheCreationTokens": 8,
+    "cacheReadTokens": 16,
+    "credits": 0.2,
+    "inputTokens": 20,
+    "outputTokens": 4,
+    "totalCost": 1.0,
+    "totalTokens": 48
+  }
+}

@@ -1,0 +1,40 @@
+---
+source: adapters/cursor/src/report.rs
+expression: "report_from_rows(&monthly, AgentReportKind::Monthly)"
+---
+{
+  "monthly": [
+    {
+      "cacheCreationTokens": 8,
+      "cacheReadTokens": 16,
+      "credits": 0.2,
+      "inputTokens": 20,
+      "modelBreakdowns": [
+        {
+          "cacheCreationTokens": 8,
+          "cacheReadTokens": 16,
+          "cost": 1.0,
+          "inputTokens": 20,
+          "modelName": "k3",
+          "outputTokens": 4
+        }
+      ],
+      "modelsUsed": [
+        "k3"
+      ],
+      "month": "2026-06",
+      "outputTokens": 4,
+      "totalCost": 1.0,
+      "totalTokens": 48
+    }
+  ],
+  "totals": {
+    "cacheCreationTokens": 8,
+    "cacheReadTokens": 16,
+    "credits": 0.2,
+    "inputTokens": 20,
+    "outputTokens": 4,
+    "totalCost": 1.0,
+    "totalTokens": 48
+  }
+}

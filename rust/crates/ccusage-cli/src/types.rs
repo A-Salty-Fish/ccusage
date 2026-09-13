@@ -21,6 +21,7 @@ pub enum Command {
     Goose(AgentCommandArgs),
     Kilo(AgentCommandArgs),
     Copilot(AgentCommandArgs),
+    Cursor(AgentCommandArgs),
     Gemini(AgentCommandArgs),
     Antigravity(AgentCommandArgs),
     Kimi(AgentCommandArgs),
