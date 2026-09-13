@@ -88,7 +88,7 @@ ccusage reads from local coding CLI data directories:
 | Kimi           | `kimi`        | `${KIMI_DATA_DIR:-~/.kimi}` (also `~/.kimi-code`)                                                         |
 | Qwen           | `qwen`        | `${QWEN_DATA_DIR:-~/.qwen}`                                                                               |
 | Copilot CLI    | `copilot`     | `${COPILOT_HOME:-~/.copilot}/session-state/*/events.jsonl`, `${COPILOT_HOME:-~/.copilot}/otel/**/*.jsonl` |
-| Cursor         | `cursor`      | Cursor dashboard API (token from `CCUSAGE_CURSOR_TOKEN` or `state.vscdb`)                                 |
+| Cursor         | `cursor`      | Cursor dashboard API (token from `CCUSAGE_CURSOR_TOKEN` or Agent CLI `auth.json`)                         |
 | Gemini CLI     | `gemini`      | `${GEMINI_DATA_DIR:-~/.gemini/tmp}`                                                                       |
 | Antigravity    | `antigravity` | `${ANTIGRAVITY_DATA_DIR:-~/.gemini/antigravity*}` or `~/.config/antigravity`                              |
 | Grok Build CLI | `grok`        | `${GROK_HOME:-~/.grok}`                                                                                   |

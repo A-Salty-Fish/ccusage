@@ -46,8 +46,8 @@ prices from the table. In-progress turns count only after
 
 ::: details Cursor
 Cursor Agent transcripts under `~/.cursor/projects` do not record billed token
-counts. This fork adds a `cursor` source that reads the signed-in desktop app's
-access token and fetches usage events from Cursor's dashboard API. Events older
+counts. This fork adds a `cursor` source that reads the Agent CLI `auth.json` (or a
+leftover desktop token) and fetches usage events from Cursor's dashboard API. Events older
 than two days are cached locally so later reports only refresh the recent
 window. This is network-backed and is not in upstream ccusage. See
 [Cursor](/guide/cursor/).

@@ -27,7 +27,8 @@ Authorization: Bearer <access token>
 Token resolution (highest first):
 
 1. `CCUSAGE_CURSOR_TOKEN`
-2. `cursorAuth/accessToken` in the Cursor desktop `state.vscdb`
+2. Agent CLI `auth.json` (`%APPDATA%/Cursor/auth.json` on Windows, `~/.config/cursor/auth.json` on Linux)
+3. Leftover desktop `cursorAuth/accessToken` in `state.vscdb`
 
 Events older than two days are stored under
 `${XDG_CACHE_HOME:-~/.cache}/ccusage/cursor/events-v1.json` (override with

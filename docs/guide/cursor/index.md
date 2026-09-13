@@ -19,12 +19,15 @@ Most users can start with unified reports such as `ccusage daily`. Add the `curs
 The CLI posts to Cursor's `GetFilteredUsageEvents` endpoint using a bearer token:
 
 1. `CCUSAGE_CURSOR_TOKEN` if set
-2. Otherwise `cursorAuth/accessToken` in the signed-in Cursor desktop app's `state.vscdb`
+2. Agent CLI login file (`auth.json` from `agent login` / `cursor-agent`)
+3. Leftover desktop `cursorAuth/accessToken` in `state.vscdb`, if present
 
 ```text
-Windows: %APPDATA%\Cursor\User\globalStorage\state.vscdb
-macOS:   ~/Library/Application Support/Cursor/User/globalStorage/state.vscdb
-Linux:   ~/.config/Cursor/User/globalStorage/state.vscdb
+Windows CLI: %APPDATA%\Cursor\auth.json
+Linux CLI:   ${XDG_CONFIG_HOME:-~/.config}/cursor/auth.json
+Desktop DB:  %APPDATA%\Cursor\User\globalStorage\state.vscdb
+             ~/Library/Application Support/Cursor/User/globalStorage/state.vscdb
+             ~/.config/Cursor/User/globalStorage/state.vscdb
 ```
 
 The token is only sent in the `Authorization` header. It is never printed or written to the cache.
@@ -77,11 +80,11 @@ These views support `--json`, `--compact`, `--mode`, `--since`, `--until`, `--ti
 ## Troubleshooting
 
 ::: details No Cursor access token found
-Sign in to the Cursor desktop app, or set `CCUSAGE_CURSOR_TOKEN`. On Windows the token is read from `%APPDATA%\Cursor\User\globalStorage\state.vscdb`.
+Run `agent login` (or `cursor-agent login`), or set `CCUSAGE_CURSOR_TOKEN`. On Windows the CLI stores credentials at `%APPDATA%\Cursor\auth.json`.
 :::
 
 ::: details HTTP 401 / 403
-The stored access token expired. Open Cursor so it refreshes, then retry, or set a fresh `CCUSAGE_CURSOR_TOKEN`.
+The stored access token expired. Run `agent login` again, or set a fresh `CCUSAGE_CURSOR_TOKEN`.
 :::
 
 ::: details `--offline` shows nothing
